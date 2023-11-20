@@ -8,7 +8,8 @@ document.addEventListener('DOMContentLoaded', function () {
 let currentQuote = {};
 
 //Dummy data - add package.json
-
+{ text: "The only limit to our realization of tomorrow will be our doubts of today.", author: "Franklin D. Roosevelt" },
+        { text: "Life is what happens when you're busy making other plans.", author: "John Lennon" },
 
 
 // Event listener for Generate Quote Button
