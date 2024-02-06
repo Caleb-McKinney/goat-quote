@@ -1,44 +1,33 @@
 document.addEventListener('DOMContentLoaded', function () {
+  //console.log('DOM content loaded');
   const quoteText = document.getElementById('quote-text');
   const quoteAuthor = document.getElementById('quote-author');
   const generateBtn = document.getElementById('generate-btn');
   const saveBtn = document.getElementById('save-btn');
-};
 
-let currentQuote = {};
+  generateBtn.addEventListener('click', fetchQuote);
+  saveBtn.addEventListener('click', saveQuote);
 
-//Dummy data - add package.json
-{ text: "The only limit to our realization of tomorrow will be our doubts of today.", author: "Franklin D. Roosevelt" },
-        { text: "Life is what happens when you're busy making other plans.", author: "John Lennon" },
-
-
-// Event listener for Generate Quote Button
-generate.Btn.addEventListener('click', generateQuote);
-
-// Event listener for Save Quote button
-saveBtn.addEventListener('click', saveQuote);
-
-// Function to generate a random quote
-function generateQuote() {
-  currentQuote = getRandomQuote();
-  displayQuote();
-}
-
-// Function to get a random quote from the quotesData array
-function getRandomQuote() {
-  const randomIndex = Math.floor(Math.random() * quotesData.length);
-  return quotesData[randomIndex];
-}
-
-// Function to save the current quote to local storage
-
-function saveQuote() {
-  if (currentQuote.text && currentQuote.author) {
-      // Use a unique key for each quote to prevent overwriting
-      const key = `quote_${Date.now()}`;
-      localStorage.setItem(key, JSON.stringify(currentQuote));
-      // Provide feedback to the user (can be improved based on your UI)
-      alert('Quote saved!');
+  function fetchQuote() {
+    // console.log('Fetching quote...');
+    fetch('https://api.quotable.io/random')
+    .then(response => response.json())
+    .then(data => {
+    //  console.log('Received quote data:', data);
+      quoteText.textContent = data.content;
+      quoteAuthor.textContent = "- " + data.author;
+    })
+    .catch(error => console.error('Error fetching quote:', error));
   }
-}
+
+  function saveQuote() {
+  //  console.log('Saving quote...');
+    const savedQuote = {
+      text: quoteText.textContent,
+      author: quoteAuthor.textContent.slice(2)
+    };
+    localStorage.setItem('favoriteQuote', JSON.stringify(savedQuote));
+    console.log('Quote saved:', savedQuote);
+    alert('Quote saved successfully!');
+  }
 });
